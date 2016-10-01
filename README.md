@@ -10,9 +10,6 @@ This can be added as a dependency from [hex.pm](https://hex.pm/packages/firebase
 
 ```
 {deps, [
-
-  %% ... other dependencies
-
   {firebase_token, "1.0.0"}
 ]}. 
 ```
@@ -23,11 +20,14 @@ One of the requirements for this library is the service account key JSON file th
 
 ```erlang
 Account = firebase_token:load_account("/path/to/service_account.json"),
+Uid = <<"1">>, %% Main user id string. Length must not exceed by 36
+Life = 3600,   %% Token life (when to expire). Must not exceed 3600 seconds
 Extra = #{
   %% Arbitrary values
   admin => true
 },
-{token, _FirebaseToken} = firebase_token:generate(Account, Uid, 3600, Extra).
+
+{token, _FirebaseToken} = firebase_token:generate(Account, Uid, Life, Extra).
 ```
 
 > **NOTE**: Extras cannot have the following keys: **acr**, **amr**, **at_hash**, **aud**, **auth_time**, **azp**, **cnf**, **c_hash**, **exp**, **firebase**, **iat**, **iss**, **jti**, **nbf**, **nonce** and **sub**.
