@@ -1,4 +1,4 @@
-# Firebase Token Generator - Erlang [![Build Status](https://secure.travis-ci.org/ruel/firebase-token-erlang.png)](http://travis-ci.org/ruel/firebase-token-erlang)
+# Firebase Token Generator - Erlang [![Build Status](https://travis-ci.org/ruel/firebase-token-erlang.svg?branch=master)](https://travis-ci.org/ruel/firebase-token-erlang)
 
 Helper module for generating custom Firebase token in Erlang. Custom Firebase tokens are used on applications with totally different authentication methods. These tokens are in JWT (JSON Web Token) format and can be then used by client applications on authenticating to Firebase.
 
