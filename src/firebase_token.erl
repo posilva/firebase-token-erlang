@@ -15,6 +15,8 @@
 
 -export([ load_account/1, generate/4 ]).
 
+-type uid() :: binary() | string() | integer().
+
 -spec load_account(string()) -> map() | {error, invalid_account}.
 %% @doc Creates a service_account() from JSON key file or url
 %% @spec load_account(string()) -> map() | {error, invalid_account}
@@ -24,19 +26,16 @@ load_account(Path) ->
   Account      = maps:with([<<"client_email">>, <<"private_key">>], JSON),
   validate_account(Account).
 
--spec generate(map(), binary(), integer(), map()) -> 
-   {token, binary()} | {error, invalid_account}.
+-spec generate(map(), uid(), integer(), map()) -> {token, binary()}.
 %% @doc Generates the custom Firebase token.
-%% @spec generate(map(), binary(), integer(), map()) -> 
-%%   {token, binary()} | {error, invalid_account}
-generate(#{ <<"client_email">> := ClientEmail, 
-            <<"private_key">>  := PrivateKey } = _Account, Uid, Life, Extra) ->
-  Claims        = build_claims(Uid, ClientEmail, Life, Extra),
-  JWK           = jose_jwk:from_pem(PrivateKey),
+%% @spec generate(map(), uid(), integer(), map()) -> {token, binary()}
+generate(Account, Uid, Life, #{} = Extra) ->
+  #{<<"client_email">> := ClientEmail,
+    <<"private_key">>  := PrivateKey } = Account,
+  Claims = build_claims(Uid, ClientEmail, Life, Extra),
+  JWK    = jose_jwk:from_pem(PrivateKey),
   {_JWS, Token} = sign(JWK, Claims),
-  {token, Token};
-generate(_Account, _Uid, _Life, _Extra) ->
-  {error, invalid_account}.
+  {token, Token}.
 
 -spec validate_account(map()) -> map() | {error, invalid_account}.
 %% @private
@@ -48,13 +47,22 @@ validate_account(#{ <<"client_email">> := _ClientEmail,
 validate_account(_Account) ->
   {error, invalid_account}.
 
--type uid() :: binary() | string().
 -spec build_claims(uid(), binary(), integer(), map()) -> map().
 %% @private
 %% @doc Builds the payload with the standard keys
 %% and cleans the options with the optional keys
 %% @spec build_claims(uid(), binary(), integer(), map()) -> map()
-build_claims(Uid, ClientEmail, Life, Extra) ->
+build_claims(Uid, ClientEmail, Life, Extra) when Life < 0 ->
+  build_claims(Uid, ClientEmail, 0, Extra);
+build_claims(Uid, ClientEmail, Life, Extra) when Life > 3600 ->
+  build_claims(Uid, ClientEmail, 3600, Extra);
+build_claims(Uid, ClientEmail, Life, Extra) when is_integer(Uid) ->
+  build_claims(integer_to_binary(Uid), ClientEmail, Life, Extra);
+build_claims(Uid, ClientEmail, Life, Extra) when is_list(Uid) ->
+  build_claims(list_to_binary(Uid), ClientEmail, Life, Extra);
+build_claims(Uid, ClientEmail, Life, Extra) when is_binary(Uid) andalso 
+                                                 size(Uid) > 0  andalso 
+                                                 size(Uid) < 37 ->
   Now = erlang:system_time(seconds),
   #{
     <<"iss">>    => ClientEmail,
