@@ -1,11 +1,8 @@
 language: erlang
 otp_release:
-   - 17.0
-   - 17.1
-   - 18.0
-   - 18.1
-   - 18.2.1
+   - 17.5
    - 18.3
+   - 19.1
 before_script:
   - "./bootstrap_travis.sh"
 script: "./rebar3 ct"
