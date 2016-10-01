@@ -4,6 +4,10 @@ Helper module for generating custom Firebase token in Erlang. Custom Firebase to
 
 Only supports Firebase 3.x.x. See https://firebase.google.com/docs/auth/server/create-custom-tokens for more information.
 
+## OTP Version
+
+**Required**: OTP 18 and later
+
 ## Setup
 
 This can be added as a dependency from [hex.pm](https://hex.pm/packages/firebase_token)
