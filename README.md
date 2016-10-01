@@ -14,7 +14,7 @@ Only supports Firebase 3.x.x. See https://firebase.google.com/docs/auth/server/c
 
 This can be added as a dependency from [hex.pm](https://hex.pm/packages/firebase_token)
 
-```
+```erlang
 {deps, [
   {firebase_token, "1.0.0"}
 ]}. 
