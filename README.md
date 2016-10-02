@@ -16,7 +16,7 @@ This can be added as a dependency from [hex.pm](https://hex.pm/packages/firebase
 
 ```erlang
 {deps, [
-  {firebase_token, "1.0.0"}
+  {firebase_token, "1.1.0"}
 ]}. 
 ```
 
@@ -25,11 +25,13 @@ This can be added as a dependency from [hex.pm](https://hex.pm/packages/firebase
 One of the requirements for this library is the service account key JSON file that can be obtained from the [Google API Manager Console](https://console.developers.google.com/apis/credentials)
 
 ```erlang
-Account = firebase_token:load_account("/path/to/service_account.json"),
+Account = firebase_token_account:load_from_file("/path/to/service_account.json"),
+%% Or you can load from binary string input
+%% Account = firebase_token_account:load(<<"{ ...JSON String... }">>),
+
 Uid = <<"1">>, %% Main user id string. Length must not exceed by 36
 Life = 3600,   %% Token life (when to expire). Must not exceed 3600 seconds
-Extra = #{
-  %% Arbitrary values
+Extra = #{     %% Arbitrary values
   admin => true
 },
 

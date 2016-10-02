@@ -11,20 +11,9 @@
 %% for more information.
 -module(firebase_token).
 
--define(TOKEN_VERSION, 0).
-
--export([ load_account/1, generate/4 ]).
+-export([ generate/4 ]).
 
 -type uid() :: binary() | string() | integer().
-
--spec load_account(string()) -> map() | {error, invalid_account}.
-%% @doc Creates a service_account() from JSON key file or url
-%% @spec load_account(string()) -> map() | {error, invalid_account}
-load_account(Path) ->
-  {ok, Binary} = file:read_file(Path),
-  JSON         = jsx:decode(Binary, [return_maps]),
-  Account      = maps:with([<<"client_email">>, <<"private_key">>], JSON),
-  validate_account(Account).
 
 -spec generate(map(), uid(), integer(), map()) -> {token, binary()}.
 %% @doc Generates the custom Firebase token.
@@ -37,15 +26,6 @@ generate(Account, Uid, Life, #{} = Extra) ->
   {_JWS, Token} = sign(JWK, Claims),
   {token, Token}.
 
--spec validate_account(map()) -> map() | {error, invalid_account}.
-%% @private
-%% @doc Validates existence of required keys in input map
-%% @spec validate_account(map()) -> map() | {error, invalid_account}
-validate_account(#{ <<"client_email">> := _ClientEmail,
-                    <<"private_key">>  := _PrivateKey } = Account) ->
-  Account;
-validate_account(_Account) ->
-  {error, invalid_account}.
 
 -spec build_claims(uid(), binary(), integer(), map()) -> map().
 %% @private
