@@ -1,6 +1,6 @@
 %% @author <ruel@ruel.me>
 %% @copyright 2016 Ruel Pagayon
-%% @version 1.0.0
+%% @version 1.1.0
 %% @doc Loads service account details from file or from a string.
 %% Service account can be retrieved from Google API Management Console
 -module(firebase_token_account).

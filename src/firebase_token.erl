@@ -1,6 +1,6 @@
 %% @author <ruel@ruel.me>
 %% @copyright 2016 Ruel Pagayon
-%% @version 1.0.0
+%% @version 1.1.0
 %% @doc Helper module for generating custom Firebase token in Erlang.
 %% Custom Firebase tokens are used on applications with totally different
 %% authentication methods. These tokens are in JWT (JSON Web Token) format
