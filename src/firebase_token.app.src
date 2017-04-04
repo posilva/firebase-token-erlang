@@ -1,14 +1,11 @@
-{application, firebase_token,
- [{description, "Custom Firebase token generator library for Erlang"},
-  {vsn, "1.1.0"},
-  {registered, []},
-  {applications, [kernel, stdlib ]},
-  {env,[]},
-  {modules, []},
-
-  {maintainers, ["Ruel Pagayon"]},
-  {licenses, ["MIT"]},
-  {links, [
-    {"Github", "https://github.com/ruel/firebase-token-erlang"}
-  ]}
- ]}.
+{application,firebase_token,
+             [{description,"Custom Firebase token generator library for Erlang"},
+              {vsn,"1.1.1"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {env,[]},
+              {modules,[]},
+              {maintainers,["Ruel Pagayon"]},
+              {licenses,["MIT"]},
+              {links,[{"Github",
+                       "https://github.com/ruel/firebase-token-erlang"}]}]}.
